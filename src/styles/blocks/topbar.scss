@@ -28,7 +28,7 @@
   margin-left: auto;
 
 &::before{
-  content: url('../image/divider.svg');
+  content: url('/image/divider.svg');
   margin: auto 0;
   margin-right: 7px;
 }
@@ -56,7 +56,7 @@
   }
 
   .topbar__logo::before {
-    content: url('image/divider.svg');
+    content: url('/image/divider.svg');
     margin: auto 0;
     margin-right: 7px;
   }

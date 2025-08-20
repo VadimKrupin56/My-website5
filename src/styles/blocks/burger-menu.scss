@@ -96,10 +96,10 @@
     text-decoration: none;
     color: black;
     font-family: $font-M;
-  
+
 
     @include hover-opacity();
-  
+
 }
 }
 
@@ -108,7 +108,7 @@
 }
 
 .menu-burger__list li:hover::before {
-    content: url("../image/highlight.svg");
+    content: url("/image/highlight.svg");
     position: absolute;
     left: -24px;
     top: -9px;

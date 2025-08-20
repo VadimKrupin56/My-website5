@@ -17,7 +17,7 @@
   display: flex;
 
   &::before {
-    content: url('../image/highlight.svg');
+    content: url('/image/highlight.svg');
     display: inline-block;
     width: 20px;
     margin-right: 0;
@@ -118,10 +118,10 @@
   border: none;
   padding-left: 0;
   cursor: pointer;
-  @include hover-opacity(); 
+  @include hover-opacity();
 
   &::before {
-    content: url('../image/expand.svg');
+    content: url('/image/expand.svg');
     width: 24px;
     margin-left: 10px;
     vertical-align: middle;
