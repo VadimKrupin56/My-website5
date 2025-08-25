@@ -11,33 +11,25 @@ document.addEventListener("DOMContentLoaded", function () {
     console.error("❌ Не все элементы найдены:", { openBtn, closeBtn, overlay });
     return;
   }
-closeBtn.addEventListener("click", function (e) {
-    e.preventDefault();
-    sidebar.classList.add("hidden"); // ✅ Возвращаем .hidden → меню исчезает
-    overlay.classList.add("hidden"); // ✅ Оверлей исчезает
-    document.body.style.overflow = "";
-  });
-  
-  // === Бургер-меню: используем .hidden и display: none ===
+
+  // === Бургер-меню: открытие/закрытие с оверлеем ===
   openBtn.addEventListener("click", function (e) {
     e.preventDefault();
-    sidebar.classList.remove("hidden"); // ✅ Убираем .hidden → меню появляется
-    overlay.classList.remove("hidden"); // ✅ Оверлей появляется
+    sidebar.classList.remove("hidden");
+    overlay.classList.remove("hidden");
     document.body.style.overflow = "hidden";
   });
 
-  
-
-  // Закрытие по оверлею
-  overlay.addEventListener("click", function () {
+  closeBtn.addEventListener("click", function (e) {
+    e.preventDefault();
     sidebar.classList.add("hidden");
     overlay.classList.add("hidden");
     document.body.style.overflow = "";
   });
 
-  // Закрытие по Esc
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && !sidebar.classList.contains("hidden")) {
+  // Закрытие бургер-меню по клику на оверлей
+  overlay.addEventListener("click", function () {
+    if (!sidebar.classList.contains("hidden")) {
       sidebar.classList.add("hidden");
       overlay.classList.add("hidden");
       document.body.style.overflow = "";
@@ -45,53 +37,98 @@ closeBtn.addEventListener("click", function (e) {
   });
 
   // === Форма обратной связи (первая) ===
-  // === Форма обратной связи (первая) ===
-const feedbackForm = document.querySelector(".feedback-form");
-const openButtons = document.querySelectorAll(".open-button-message");
-const closeButtons = document.querySelectorAll(".close-button-message");
+  const feedbackForm = document.querySelector(".feedback-form");
+  const openButtons = document.querySelectorAll(".open-button-message");
+  const closeButtons = document.querySelectorAll(".close-button-message");
 
-if (!feedbackForm) {
-  console.error("❌ Форма .feedback-form не найдена");
-} else {
-  openButtons.forEach((btn) => {
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
-      feedbackForm.classList.add("open"); // ✅ Добавляем класс для открытия
-      document.body.style.overflow = "hidden"; // ✅ Блокируем прокрутку
+  if (!feedbackForm) {
+    console.error("❌ Форма .feedback-form не найдена");
+  } else {
+    openButtons.forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        feedbackForm.classList.add("open");
+        overlay.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      });
     });
-  });
 
-  closeButtons.forEach((btn) => {
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
-      feedbackForm.classList.remove("open"); // ✅ Удаляем класс для закрытия
-      document.body.style.overflow = ""; // ✅ Возвращаем прокрутку
+    closeButtons.forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        feedbackForm.classList.remove("open");
+        overlay.classList.add("hidden");
+        document.body.style.overflow = "";
+      });
     });
-  });
-}
+  }
 
   // === Вторая форма (если есть) ===
-const feedbackFormOne = document.querySelector(".feedback-form--one");
-const openBtnOne = document.querySelectorAll(".open-button-feedback");
-const closeBtnOne = document.querySelectorAll(".close-btn-feedback");
+  const feedbackFormOne = document.querySelector(".feedback-form--one");
+  const openBtnOne = document.querySelectorAll(".open-button-feedback");
+  const closeBtnOne = document.querySelectorAll(".close-btn-feedback");
 
-if (feedbackFormOne) {
-  openBtnOne.forEach((btn) => {
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
-      feedbackFormOne.classList.add("open"); // Добавляем класс для открытия
-      document.body.style.overflow = "hidden"; // Блокируем прокрутку
+  if (feedbackFormOne) {
+    openBtnOne.forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        feedbackFormOne.classList.add("open");
+        overlay.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      });
     });
+
+    closeBtnOne.forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        feedbackFormOne.classList.remove("open");
+        overlay.classList.add("hidden");
+        document.body.style.overflow = "";
+      });
+    });
+  }
+
+  // === Закрытие форм по оверлею ===
+  overlay.addEventListener("click", function () {
+    // Если форма открыта — закрываем
+    if (feedbackForm && feedbackForm.classList.contains("open")) {
+      feedbackForm.classList.remove("open");
+      overlay.classList.add("hidden");
+      document.body.style.overflow = "";
+    }
+
+    if (feedbackFormOne && feedbackFormOne.classList.contains("open")) {
+      feedbackFormOne.classList.remove("open");
+      overlay.classList.add("hidden");
+      document.body.style.overflow = "";
+    }
   });
 
-  closeBtnOne.forEach((btn) => {
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
-      feedbackFormOne.classList.remove("open"); // Удаляем класс для закрытия
-      document.body.style.overflow = ""; // Возвращаем прокрутку
-    });
+  // === Закрытие по клавише Escape ===
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      // Закрытие бургер-меню
+      if (!sidebar.classList.contains("hidden")) {
+        sidebar.classList.add("hidden");
+        overlay.classList.add("hidden");
+        document.body.style.overflow = "";
+      }
+
+      // Закрытие первой формы
+      if (feedbackForm && feedbackForm.classList.contains("open")) {
+        feedbackForm.classList.remove("open");
+        overlay.classList.add("hidden");
+        document.body.style.overflow = "";
+      }
+
+      // Закрытие второй формы
+      if (feedbackFormOne && feedbackFormOne.classList.contains("open")) {
+        feedbackFormOne.classList.remove("open");
+        overlay.classList.add("hidden");
+        document.body.style.overflow = "";
+      }
+    }
   });
-}
 
   // === Кнопка "Читать далее" ===
   const skipBtn = document.querySelector(".button__skip");
@@ -112,8 +149,6 @@ if (feedbackFormOne) {
       }
     });
   }
-
-  
 
   // === Слайдеры (Swiper) ===
   let swiperBrands = null;

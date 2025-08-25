@@ -44,8 +44,6 @@ body{
   display: none;
 }
 
-@media (max-width: 1120px) {
-.overlay{
+.overlay:not(.hidden) {
   display: block;
-}
 }
